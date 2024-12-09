@@ -11,7 +11,7 @@ This project aims to analyze flight delays using various machine learning models
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/Flight_delay_analysis.git
+   git clone https://github.com/oscar066/Flight_delay_analysis.git
    cd Flight_delay_analysis
    ```
 
@@ -29,14 +29,14 @@ This project aims to analyze flight delays using various machine learning models
 ## Screenshots
 Here are some visual representations of the project:
 
-### Screenshot 1
-![Screenshot 1](images/image1.png)
+### Input Screen 
+![Screenshot 1](images/image1.png){: width="300" height="200"}
 
-### Screenshot 2
-![Screenshot 2](images/image2.png)
+### Submission to model 
+![Screenshot 2](images/image2.png){: width="300" height="200"}
 
-### Screenshot 3
-![Screenshot 3](images/image3.png)
+### Result
+![Screenshot 3](images/image3.png){: width="300" height="200"}
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
