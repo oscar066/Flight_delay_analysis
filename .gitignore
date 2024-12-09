@@ -1,0 +1,7 @@
+
+
+# ignore the data folder as it is too large 
+data/
+
+# ignore the models folder as some of the models can be too large
+models/
