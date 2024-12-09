@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
 # Load your trained model
-model_path = "models/xgboost_model.joblib"
+model_path = "models/random_forest_model.joblib"
 model = joblib.load(model_path)
 
 app = Flask(__name__)
@@ -81,7 +81,7 @@ def predict():
 
         # Predict the class using the XGBoost model
         prediction = model.predict(encoded_input_df)
-        result = "Delayed" if prediction[0] else "On Time"
+        result = "On Time" if prediction[0] else "Delayed"
 
         return render_template('result.html', result=result)
 
