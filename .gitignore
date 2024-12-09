@@ -8,3 +8,7 @@ models/
 
 # ignore python cache 
 web_app/__pycache__
+
+# ignore mac store
+.DS_Store
+web_app/.DS_Store
