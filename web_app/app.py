@@ -2,30 +2,17 @@ from flask import Flask, render_template, request, jsonify
 import joblib
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
+from typing import Union
+from utils import encode_categorical_columns
 
-# Load your trained model
+# Load your trained models
 model_path = "models/random_forest_model.joblib"
-model = joblib.load(model_path)
+try:
+    model = joblib.load(model_path)
+except Exception as e:
+    raise RuntimeError(f"Failed to load model from {model_path}: {e}")
 
 app = Flask(__name__)
-
-# Function to encode categorical columns
-def encode_categorical_columns(df: pd.DataFrame, encoding_type: str = 'label') -> pd.DataFrame:
-    df_encoded = df.copy()
-    categorical_columns = df_encoded.select_dtypes(include=['category', 'object']).columns
-
-    if encoding_type == 'label':
-        for col in categorical_columns:
-            le = LabelEncoder()
-            df_encoded[col] = le.fit_transform(df_encoded[col])
-
-    elif encoding_type == 'onehot':
-        df_encoded = pd.get_dummies(df_encoded, columns=categorical_columns, drop_first=True)
-
-    else:
-        raise ValueError("Unsupported encoding_type. Use 'label' or 'onehot'.")
-
-    return df_encoded
 
 @app.route('/')
 def index():
@@ -81,12 +68,33 @@ def predict():
 
         # Predict the class using the XGBoost model
         prediction = model.predict(encoded_input_df)
-        result = "On Time" if prediction[0] else "Delayed"
+        result = "On Time" if prediction[0] == 0 else "Delayed"
 
         return render_template('result.html', result=result)
 
     except Exception as e:
         return jsonify({'error': str(e)})
+    
 
-if __name__ == '__main__':
+@app.route('/predict_api', methods=['POST'])
+def predict_api() -> Union[str, jsonify]:
+    try:
+        # Extract JSON data from the request body
+        data = request.get_json()
+    
+        # Convert the input data to a DataFrame for consistency with model input expectations
+        input_df = pd.DataFrame([data])
+    
+        # Encode the input data
+        encoded_input_df = encode_categorical_columns(input_df, encoding_type='label')
+    
+        # Predict the class using the model
+        prediction = model.predict(encoded_input_df)
+    
+        return jsonify({'result': prediction.tolist()})
+    
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+if __name__ == '__main__':  
     app.run(debug=True)
