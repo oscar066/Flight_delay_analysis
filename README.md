@@ -30,7 +30,7 @@ This project aims to analyze flight delays using various machine learning models
 Here are some visual representations of the project:
 
 ### Input Screen 
-![Screenshot 1](images/newmage1.png){: width="300" height="200"}
+![Screenshot 1](images/newimage1.png){: width="300" height="200"}
 
 ### Submission to model 
 ![Screenshot 2](images/newimage2.png){: width="300" height="200"}
