@@ -30,13 +30,13 @@ This project aims to analyze flight delays using various machine learning models
 Here are some visual representations of the project:
 
 ### Input Screen 
-![Screenshot 1](images/image1.png){: width="300" height="200"}
+![Screenshot 1](images/newmage1.png){: width="300" height="200"}
 
 ### Submission to model 
-![Screenshot 2](images/image2.png){: width="300" height="200"}
+![Screenshot 2](images/newimage2.png){: width="300" height="200"}
 
 ### Result
-![Screenshot 3](images/image3.png){: width="300" height="200"}
+![Screenshot 3](images/newimage3.png){: width="300" height="200"}
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
