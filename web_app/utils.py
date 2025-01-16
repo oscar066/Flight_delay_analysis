@@ -26,3 +26,25 @@ def encode_categorical_columns(df: pd.DataFrame, encoding_type: str = 'label') -
         raise ValueError("Unsupported encoding_type. Use 'label' or 'onehot'.")
     
     return df_encoded
+
+def encode_categorical_columns_training_encoder(df, label_encoders):
+    # Use the loaded label_encoders to encode specified categorical columns
+    encoded_columns = ['airline', 'origin_city', 'dest_city']
+    for column in encoded_columns:
+        if column in df.columns and column in label_encoders:
+            df[column] = label_encoders[column].transform(df[column])
+        else:
+            raise ValueError(f"Label encoder for column {column} not found.")
+    return df
+
+        # example usage
+        # come back to this later
+        # encoded_input_df = encode_categorical_columns_training_encoder(input_df, label_encoder)
+
+
+       # lets add the scaling here
+       # encoded_input_scaled_df = scaler.transform(encoded_input_df)
+
+# task 46
+# Remember to label encode the data then scale ie the trimmed data then train for uniformity 
+

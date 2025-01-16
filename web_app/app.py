@@ -3,14 +3,19 @@ import joblib
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from typing import Union
-from utils import encode_categorical_columns
+from utils import encode_categorical_columns, encode_categorical_columns_training_encoder
 
-# Load your trained models
-model_path = "models/random_forest_trimmed_data_model.joblib"
+# Load your trained models and preprocessing objects
+model_path = "models/xgboost_trimmed_data_model.joblib"
+scaler_path = "utils/data_scaler.joblib"
+label_encoder_path = "utils/label_encoders.joblib"
+
 try:
     model = joblib.load(model_path)
+    scaler = joblib.load(scaler_path)
+    label_encoder = joblib.load(label_encoder_path)
 except Exception as e:
-    raise RuntimeError(f"Failed to load model from {model_path}: {e}")
+    raise RuntimeError(f"Failed to load model, scaler, or label encoder: {e}")
 
 app = Flask(__name__)
 
@@ -40,7 +45,7 @@ def predict():
 
         # Predict the class using the XGBoost model
         prediction = model.predict(encoded_input_df)
-        result = "On Time" if prediction[0] == 0 else "Delayed"
+        result = "On Time" if prediction[0] else "Delayed"
 
         return render_template('result.html', result=result)
 
@@ -53,9 +58,17 @@ def predict_api() -> Union[str, jsonify]:
     try:
         # Extract JSON data from the request body
         data = request.get_json()
-    
-        # Convert the input data to a DataFrame for consistency with model input expectations
-        input_df = pd.DataFrame([data])
+
+        # Define the correct feature order based on the model
+        feature_order = [
+            'airline', 'fl_number', 'origin_city', 'dest_city',
+            'crs_dep_time', 'dep_time', 'dep_delay', 'taxi_out',
+            'taxi_in', 'crs_arr_time', 'arr_time', 'arr_delay',
+            'distance', 'day', 'month', 'day_of_week'
+        ]
+
+        # Create the DataFrame in the correct order
+        input_df = pd.DataFrame([[data[field] for field in feature_order]], columns=feature_order)
     
         # Encode the input data
         encoded_input_df = encode_categorical_columns(input_df, encoding_type='label')
