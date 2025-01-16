@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flight Delay Prediction</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="/" class="navbar-brand">Flight Delay Predictor</a>
+        <ul class="navbar-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <h1>Flight Delay Prediction</h1>
+      <form action="/predict" method="POST">
+        <!-- Flight Information -->
+        <div class="form-group">
+          <label for="airline">Airline (Numeric Code):</label>
+          <input
+            type="number"
+            id="airline"
+            name="airline"
+            value="17"
+            required
+          />
+          <span class="hint"
+            >Enter the numeric code representing the airline.</span
+          >
+        </div>
+        <!-- <div class="form-group">
+          <label for="airline_dot">Airline DOT Code:</label>
+          <input
+            type="number"
+            id="airline_dot"
+            name="airline_dot"
+            value="17"
+            required
+          />
+          <span class="hint">Numeric DOT code for the airline.</span>
+        </div>
+        <div class="form-group">
+          <label for="airline_code">Airline Code:</label>
+          <input
+            type="number"
+            id="airline_code"
+            name="airline_code"
+            value="14"
+            required
+          />
+          <span class="hint">Unique code for the airline (numeric).</span>
+        </div>
+        <div class="form-group">
+          <label for="dot_code">DOT Code:</label>
+          <input
+            type="number"
+            id="dot_code"
+            name="dot_code"
+            value="19977"
+            required
+          />
+          <span class="hint">Numeric DOT code.</span> -->
+        </div>
+        <div class="form-group">
+          <label for="fl_number">Flight Number:</label>
+          <input
+            type="number"
+            id="fl_number"
+            name="fl_number"
+            value="1562"
+            required
+          />
+          <span class="hint">Enter the flight number (numeric).</span>
+        </div>
+
+        <!-- <div class="form-group">
+          <label for="origin">Origin (Numeric Code):</label>
+          <input type="number" id="origin" name="origin" value="131" required />
+          <span class="hint">Numeric code for the origin airport.</span>
+        </div> -->
+
+        <div class="form-group">
+          <label for="origin_city">Origin City:</label>
+          <input
+            type="text"
+            id="origin_city"
+            name="origin_city"
+            value="118"
+            required
+          />
+          <span class="hint">Enter the origin city code (numeric).</span>
+        </div>
+
+        <!-- <div class="form-group">
+          <label for="dest">Destination (Numeric Code):</label>
+          <input type="number" id="dest" name="dest" value="123" required />
+          <span class="hint">Numeric code for the destination airport.</span>
+        </div> -->
+
+        <div class="form-group">
+          <label for="dest_city">Destination City:</label>
+          <input
+            type="text"
+            id="dest_city"
+            name="dest_city"
+            value="240"
+            required
+          />
+          <span class="hint">Enter the destination city code (numeric).</span>
+        </div>
+        <div class="form-group">
+          <label for="crs_dep_time">Scheduled Departure Time (HHMM):</label>
+          <input
+            type="text"
+            id="crs_dep_time"
+            name="crs_dep_time"
+            value="1155"
+            required
+          />
+          <span class="hint">Format: HHMM (e.g., 1430 for 2:30 PM).</span>
+        </div>
+        <div class="form-group">
+          <label for="dep_time">Actual Departure Time (HHMM):</label>
+          <input
+            type="text"
+            id="dep_time"
+            name="dep_time"
+            value="1151"
+            required
+          />
+          <span class="hint">Format: HHMM (e.g., 1430 for 2:30 PM).</span>
+        </div>
+        <div class="form-group">
+          <label for="dep_delay">Departure Delay (in Minutes):</label>
+          <input
+            type="number"
+            id="dep_delay"
+            name="dep_delay"
+            value="-4.0"
+            required
+          />
+          <span class="hint">Enter the departure delay in minutes.</span>
+        </div>
+        <div class="form-group">
+          <label for="taxi_out">Taxi Out (in Minutes):</label>
+          <input
+            type="number"
+            id="taxi_out"
+            name="taxi_out"
+            value="19.0"
+            required
+          />
+          <span class="hint">Enter taxi-out time in minutes.</span>
+        </div>
+        <!-- <div class="form-group">
+          <label for="wheels_off">Wheels Off (HHMM):</label>
+          <input
+            type="text"
+            id="wheels_off"
+            name="wheels_off"
+            value="1210"
+            required
+          />
+          <span class="hint">Format: HHMM.</span>
+        </div> -->
+        <!-- <div class="form-group">
+          <label for="wheels_on">Wheels On (HHMM):</label>
+          <input
+            type="text"
+            id="wheels_on"
+            name="wheels_on"
+            value="1443"
+            required
+          />
+          <span class="hint">Format: HHMM.</span>
+        </div> -->
+        <div class="form-group">
+          <label for="taxi_in">Taxi In (in Minutes):</label>
+          <input
+            type="number"
+            id="taxi_in"
+            name="taxi_in"
+            value="4.0"
+            required
+          />
+          <span class="hint">Enter taxi-in time in minutes.</span>
+        </div>
+        <div class="form-group">
+          <label for="crs_arr_time">Scheduled Arrival Time (HHMM):</label>
+          <input
+            type="text"
+            id="crs_arr_time"
+            name="crs_arr_time"
+            value="1501"
+            required
+          />
+          <span class="hint">Format: HHMM (e.g., 1930 for 7:30 PM).</span>
+        </div>
+        <div class="form-group">
+          <label for="arr_time">Actual Arrival Time (HHMM):</label>
+          <input
+            type="text"
+            id="arr_time"
+            name="arr_time"
+            value="1447"
+            required
+          />
+          <span class="hint">Format: HHMM (e.g., 1930 for 7:30 PM).</span>
+        </div>
+        <div class="form-group">
+          <label for="arr_delay">Arrival Delay (in Minutes):</label>
+          <input
+            type="number"
+            id="arr_delay"
+            name="arr_delay"
+            value="-14.0"
+            required
+          />
+          <span class="hint">Enter the arrival delay in minutes.</span>
+        </div>
+
+        <!-- <div class="form-group">
+          <label for="cancelled">Cancelled (0 for No, 1 for Yes):</label>
+          <input type="number" id="cancelled" name="cancelled" required />
+          <span class="hint">Enter 0 for no or 1 for yes.</span>
+        </div>
+        <div class="form-group">
+          <label for="diverted">Diverted (0 for No, 1 for Yes):</label>
+          <input type="number" id="diverted" name="diverted" required />
+          <span class="hint">Enter 0 for no or 1 for yes.</span>
+        </div> -->
+
+        <!-- <div class="form-group">
+          <label for="crs_elapsed_time"
+            >Scheduled Elapsed Time (in minutes):</label
+          >
+          <input
+            type="number"
+            id="crs_elapsed_time"
+            name="crs_elapsed_time"
+            value="186.0"
+            required
+          />
+          <span class="hint">Enter the scheduled elapsed time in minutes.</span>
+        </div> -->
+        <!-- <div class="form-group">
+          <label for="elapsed_time">Elapsed Time (in minutes):</label>
+          <input
+            type="number"
+            id="elapsed_time"
+            name="elapsed_time"
+            value="176.0"
+            required
+          />
+          <span class="hint">Enter the total elapsed time in minutes.</span>
+        </div> -->
+        <!-- <div class="form-group">
+          <label for="air_time">Air Time (in minutes):</label>
+          <input
+            type="number"
+            id="air_time"
+            name="air_time"
+            value="153.0"
+            required
+          />
+          <span class="hint">Enter the airborne time in minutes.</span>
+        </div> -->
+        <div class="form-group">
+          <label for="distance">Distance (in miles):</label>
+          <input
+            type="number"
+            id="distance"
+            name="distance"
+            value="1065.0"
+            required
+          />
+          <span class="hint">Enter the flight distance in miles.</span>
+        </div>
+
+        Delay-related Inputs
+        <!-- <div class="form-group">
+          <label for="delay_due_carrier"
+            >Delay Due to Carrier (in Minutes):</label
+          >
+          <input
+            type="number"
+            id="delay_due_carrier"
+            name="delay_due_carrier"
+            required
+          />
+          <span class="hint"
+            >Enter the delay due to the carrier in minutes.</span
+          >
+        </div>
+        <div class="form-group">
+          <label for="delay_due_weather"
+            >Delay Due to Weather (in Minutes):</label
+          >
+          <input
+            type="number"
+            id="delay_due_weather"
+            name="delay_due_weather"
+            required
+          />
+          <span class="hint">Enter the delay due to weather in minutes.</span>
+        </div>
+        <div class="form-group">
+          <label for="delay_due_nas">Delay Due to NAS (in Minutes):</label>
+          <input
+            type="number"
+            id="delay_due_nas"
+            name="delay_due_nas"
+            required
+          />
+          <span class="hint">Enter the delay due to NAS in minutes.</span>
+        </div>
+        <div class="form-group">
+          <label for="delay_due_security"
+            >Delay Due to Security (in Minutes):</label
+          >
+          <input
+            type="number"
+            id="delay_due_security"
+            name="delay_due_security"
+            required
+          />
+          <span class="hint">Enter the delay due to security in minutes.</span>
+        </div>
+        <div class="form-group">
+          <label for="delay_due_late_aircraft"
+            >Delay Due to Late Aircraft (in Minutes):</label
+          >
+          <input
+            type="number"
+            id="delay_due_late_aircraft"
+            name="delay_due_late_aircraft"
+            required
+          />
+          <span class="hint"
+            >Enter the delay due to late aircraft in minutes.</span
+          >
+        </div> -->
+
+        <!-- Date Information -->
+        <div class="form-group">
+          <label for="day">Day:</label>
+          <input type="number" id="day" name="day" value="9" required />
+        </div>
+        <div class="form-group">
+          <label for="month">Month:</label>
+          <input type="number" id="month" name="month" value="1" required />
+        </div>
+        <div class="form-group">
+          <label for="day_of_week">Day of the Week:</label>
+          <input
+            type="number"
+            id="day_of_week"
+            name="day_of_week"
+            value="2"
+            required
+          />
+        </div>
+        <!-- <div class="form-group">
+          <label for="year">Year:</label>
+          <input type="number" id="year" name="year" value="2019" required />
+        </div> -->
+
+        <button type="submit" class="btn">Predict Flight Delay</button>
+      </form>
+    </div>
+    <footer class="footer">
+      <div class="footer-container">
+        <p>&copy; 2024 Flight Delay Predictor. All Rights Reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>
